@@ -310,7 +310,7 @@ h1{
 </div>
 <script>
 
-const targetDate = new Date("February 28, 2026 21:08:00"); // 8:55 PM
+const targetDate = new Date("February 28 , 2026 21:27:00"); 
 let birthdayTriggered = false;
 
 const photos = [
@@ -409,10 +409,11 @@ async function startPhotoSequence(){
         const finalImage = document.createElement("img");
         finalImage.src = "image.png";
         finalImage.alt = "Final Image";
-        finalImage.style.width = "100%";
+        finalImage.style.width = "50%"; // Medium size
+        finalImage.style.height = "auto"; // Maintain aspect ratio
         finalImage.style.display = "block";
-        finalImage.style.margin = "20px auto";
-        finalImage.style.textAlign = "center";
+        finalImage.style.margin = "20px auto"; // Center the image
+        finalImage.style.position = "relative";
 
         document.body.appendChild(finalImage); // Add the image to the body
     }, 10000);
