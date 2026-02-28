@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Surprise</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Poppins',sans-serif;
+    overflow:hidden;
+    background:#0f172a;
+    color:white;
+}
+
+/* ANIMATED BACKGROUND BLOBS */
+.background{
+    position:fixed;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    z-index:-1;
+}
+
+.blob{
+    position:absolute;
+    width:500px;
+    height:500px;
+    border-radius:50%;
+    filter:blur(120px);
+    opacity:0.6;
+    animation:float 12s infinite alternate ease-in-out;
+}
+
+.blob1{background:#ff6b6b; top:-100px; left:-100px;}
+.blob2{background:#48dbfb; bottom:-150px; right:-100px;}
+.blob3{background:#feca57; top:40%; left:50%; transform:translate(-50%,-50%);}
+
+@keyframes float{
+    from{transform:translateY(0px);}
+    to{transform:translateY(60px);}
+}
+
+/* SCREENS */
+.lock-screen,
+.birthday-screen{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+}
+
+.birthday-screen{display:none;}
+
+h1{
+    font-family:'Playfair Display',serif;
+    font-size:2.8rem;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    opacity:0.7;
+    margin-bottom:40px;
+}
+
+/* CARD */
+.card{
+    width:420px;
+    height:560px;
+    border-radius:28px;
+    overflow:hidden;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(20px);
+    box-shadow:0 40px 100px rgba(0,0,0,0.4);
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    transition:all .8s ease;
+    opacity:0;
+    transform:scale(0.95);
+}
+
+.card img{
+    width:92%;
+    height:400px;
+    object-fit:cover;
+    background: #f6f6fa;
+    padding: 12px;
+    display:block;
+    border-radius:16px;
+    box-shadow:0 4px 24px rgba(0,0,0,0.07);
+    margin-top:auto;
+    margin-bottom:0;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.card p{
+    background:#fff;
+    padding:18px 0 14px 0;
+    font-weight:700;
+    color:#111111;
+    text-align:center;
+    border-radius:0 0 20px 20px;
+    margin:0;
+    position:relative;
+    bottom:0;
+    box-shadow:0 8px 24px rgba(0,0,0,0.07);
+    letter-spacing:0.01em;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 60px;
+    line-height: 1.2;
+    margin-top: auto;
+}
+
+/* SLIDER INSIDE CARD */
+.slider-container{
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    height:100%;
+    padding:30px;
+    background:white;
+    color:#111;
+}
+
+.slider-container h2{
+    margin-bottom:20px;
+}
+
+.slider{
+    width:100%;
+    height:8px;
+    border-radius:6px;
+    background:#eee;
+    appearance:none;
+    outline:none;
+}
+
+.slider::-webkit-slider-thumb{
+    appearance:none;
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background:#ff6b6b;
+    cursor:pointer;
+}
+
+.slider-text{
+    margin-top:15px;
+    font-weight:600;
+}
+
+/* SLIDER SECTION BACKGROUND */
+.slider-section {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: url('friendship-bg.png') no-repeat center center;
+    background-size: contain; /* Ensures the entire image is visible */
+    background-color: rgba(255, 255, 255, 0.5); /* Adds transparency */
+    background-blend-mode: lighten; /* Blends the background image with the color */
+    border-radius: 10px;
+    padding: 20px;
+}
+
+/* CONFETTI */
+.confetti{
+    position:fixed;
+    top:0; /* Start from the top of the page */
+    left:0;
+    width:10px;
+    height:18px;
+    z-index:9999;
+    pointer-events:none;
+}
+
+/* GRADIENT BACKGROUND ANIMATION */
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+/* LOCK SCREEN REBRAND */
+
+.lock-screen{
+    position:fixed;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:40px;
+    background: radial-gradient(circle at 30% 30%, #1e293b, #0f172a 60%);
+    overflow:hidden;
+    color:white;
+}
+
+/* animated gradient glow */
+.lock-screen::before{
+    content:"";
+    position:absolute;
+    width:600px;
+    height:600px;
+    background: radial-gradient(circle, rgba(255,105,180,0.4), transparent 70%);
+    top:-150px;
+    left:-150px;
+    filter:blur(120px);
+    animation: moveGlow 10s infinite alternate ease-in-out;
+}
+
+@keyframes moveGlow{
+    from{transform:translate(0,0);}
+    to{transform:translate(120px,80px);}
+}
+
+.lock-screen h1{
+    font-family:'Playfair Display',serif;
+    font-size:3rem;
+    letter-spacing:1px;
+    margin-bottom:10px;
+}
+
+.lock-screen p{
+    opacity:0.7;
+    margin-bottom:30px;
+}
+
+.countdown-display{
+    font-size:2.2rem;
+    font-weight:600;
+    letter-spacing:2px;
+    margin-bottom:30px;
+}
+
+.early-access{
+    background:black;
+    color:white;
+    border:1px solid rgba(255,255,255,0.2);
+    padding:12px 30px;
+    border-radius:40px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all .3s ease;
+}
+
+.early-access:hover{
+    background:white;
+    color:black;
+    transform:scale(1.08);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="background">
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="blob blob3"></div>
+</div>
+<div class="lock-screen" id="lock-screen">
+    <h1>Not Yet.</h1>
+    <p>Time is still cooking.</p>
+
+    <div class="countdown-display" id="countdown">
+        00d 00h 00m 00s
+    </div>
+
+    <button class="early-access" id="early-access">
+        Try Early Access
+    </button>
+</div>
+
+<div class="birthday-screen" id="birthday-screen">
+<h1>A New Chapter Begins ✨</h1>
+<p class="subtitle">Another year. More stories.</p>
+
+<div class="card" id="card">
+<img id="photo-img">
+<p id="photo-caption"></p>
+
+<div class="slider-container" id="slider-container">
+<h2>Rate Our Friendship </h2>
+<div class="slider-section">
+<input type="range" min="0" max="100" value="100" class="slider" id="friendship-slider">
+<p class="slider-text" id="slider-text">Correct broo.... Obviously.</p>
+</div>
+</div>
+
+</div>
+</div>
+<script>
+
+const targetDate = new Date("February 28, 2026 21:08:00"); // 8:55 PM
+let birthdayTriggered = false;
+
+const photos = [
+{src:"img1.jpeg",caption:"The day we met. And the day which gave me a finestt frienddd 🫠."},
+{src:"img2.jpeg",caption:"Pose ahh paaruuu 😂❤️."},
+{src:"img3.jpeg",caption:"May youuuu get such more graceful sleeppsss....😴😴"},
+{src:"img4.jpeg",caption:"Shakthi maaannn 👺."},
+{src:"img5.jpeg",caption:"Nandriiii vanakkammm 🕺🙏."}
+];
+
+const lockScreen = document.getElementById("lock-screen");
+const birthdayScreen = document.getElementById("birthday-screen");
+
+const earlyButton = document.querySelector(".early-access");
+
+/* COUNTDOWN */
+function updateCountdown(){
+    const now = new Date();
+    const diff = targetDate - now;
+
+    if(diff <= 0 && !birthdayTriggered){
+        birthdayTriggered = true;
+        triggerBirthday();
+        return;
+    }
+
+    if(diff <= 0) return;
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").textContent =
+`${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+    document.querySelector(".early-access").addEventListener("click", function(){
+        alert("Adhelaa mudiyaadhu");
+    });
+}
+
+setInterval(updateCountdown,1000);
+updateCountdown();
+
+/* TRIGGER BIRTHDAY */
+function triggerBirthday(){
+    lockScreen.style.transition = "opacity 0.6s";
+    lockScreen.style.opacity = "0";
+
+    setTimeout(()=>{
+        lockScreen.style.display = "none";
+        birthdayScreen.style.display = "flex";
+        launchConfetti();
+        setTimeout(startPhotoSequence,1000);
+    },600);
+}
+
+/* PHOTO SEQUENCE */
+async function startPhotoSequence(){
+    const card=document.getElementById("card");
+    const img=document.getElementById("photo-img");
+    const caption=document.getElementById("photo-caption");
+    const sliderContainer=document.getElementById("slider-container");
+
+    for(let i=0;i<photos.length;i++){
+
+        img.style.display="block";
+        caption.style.display="block";
+        sliderContainer.style.display="none";
+
+        img.src=photos[i].src;
+        caption.textContent=photos[i].caption;
+
+        await wait(100);
+        card.style.opacity="1";
+        card.style.transform="scale(1)";
+
+        await wait(3800);
+
+        card.style.opacity="0";
+        card.style.transform="scale(0.95)";
+        await wait(700);
+    }
+
+    img.style.display="none";
+    caption.style.display="none";
+    sliderContainer.style.display="flex";
+
+    card.style.opacity="1";
+    card.style.transform="scale(1)";
+
+    // Hide the card and show image.png after 10 seconds
+    setTimeout(() => {
+        card.style.display = "none"; // Hide the card
+
+        const finalImage = document.createElement("img");
+        finalImage.src = "image.png";
+        finalImage.alt = "Final Image";
+        finalImage.style.width = "100%";
+        finalImage.style.display = "block";
+        finalImage.style.margin = "20px auto";
+        finalImage.style.textAlign = "center";
+
+        document.body.appendChild(finalImage); // Add the image to the body
+    }, 10000);
+}
+
+/* CONFETTI */
+function launchConfetti(){
+    const colors=["#ff6b6b","#feca57","#48dbfb","#1dd1a1","#5f27cd"];
+
+    for(let i=0;i<150;i++){
+        const confetti=document.createElement("div");
+        confetti.className="confetti";
+        confetti.style.left=Math.random()*100+"vw";
+        confetti.style.top=Math.random()*-100+"px";
+        confetti.style.background=colors[Math.floor(Math.random()*colors.length)];
+
+        document.body.appendChild(confetti);
+
+        const duration=Math.random()*2000+3000;
+
+        confetti.animate([
+            {transform:"translateY(0) rotate(0deg)"},
+            {transform:`translateY(110vh) rotate(${Math.random()*720}deg)`}
+        ],{duration:duration,easing:"ease-in",fill:"forwards"});
+
+        setTimeout(()=>confetti.remove(),duration);
+    }
+}
+
+function wait(ms){return new Promise(r=>setTimeout(r,ms));}
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+    const slider = document.getElementById("friendship-slider");
+    const text = document.getElementById("slider-text");
+
+    if(!slider) return;
+
+    slider.addEventListener("input", function(){
+
+        if(this.value < 100){
+            text.textContent = "Wrong answer. No other choice da 😌";
+            
+            setTimeout(()=>{
+                this.value = 100;
+                text.textContent = "Correct. Obviously.";
+            }, 900);
+
+        } else {
+            text.textContent = "Correct. Obviously.";
+        }
+
+    });
+
+});
+</script>
+
+</body>
+</html>
