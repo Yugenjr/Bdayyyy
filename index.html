@@ -310,7 +310,7 @@ h1{
 </div>
 <script>
 
-const targetDate = new Date("March 1, 2026 00:00:00"); 
+const targetDate = new Date("February 28, 2026 21:51:00"); 
 let birthdayTriggered = false;
 
 const photos = [
@@ -426,7 +426,8 @@ async function startPhotoSequence(){
         finalImage.style.borderRadius = "28px"; // Match card border radius
         finalImage.style.boxShadow = "0 40px 100px rgba(0,0,0,0.4)"; // Match card shadow
 
-        document.body.appendChild(finalImage); // Add the image to the body
+        const birthdayScreen = document.getElementById("birthday-screen");
+        birthdayScreen.appendChild(finalImage); // Add the image to the birthday screen
     }, 10000);
 }
 
