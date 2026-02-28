@@ -310,7 +310,7 @@ h1{
 </div>
 <script>
 
-const targetDate = new Date("February 28 , 2026 21:40:00"); 
+const targetDate = new Date("March 1, 2026 00:00:00"); 
 let birthdayTriggered = false;
 
 const photos = [
@@ -348,7 +348,10 @@ function updateCountdown(){
 `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
     document.querySelector(".early-access").addEventListener("click", function(){
-        alert("Adhelaa mudiyaadhu");
+        if (!earlyAccessAlertShown) {
+            alert("Adhelaa mudiyaadhu");
+            earlyAccessAlertShown = true; // Set the flag to true after showing the alert
+        }
     });
 }
 
@@ -409,11 +412,12 @@ async function startPhotoSequence(){
         const finalImage = document.createElement("img");
         finalImage.src = "image.png";
         finalImage.alt = "Final Image";
-        finalImage.style.width = "50%"; // Medium size
-        finalImage.style.height = "auto"; // Maintain aspect ratio
+        finalImage.style.width = "420px"; // Match card width
+        finalImage.style.height = "560px"; // Match card height
         finalImage.style.display = "block";
         finalImage.style.margin = "20px auto"; // Center the image
-        finalImage.style.position = "relative";
+        finalImage.style.borderRadius = "28px"; // Match card border radius
+        finalImage.style.boxShadow = "0 40px 100px rgba(0,0,0,0.4)"; // Match card shadow
 
         document.body.appendChild(finalImage); // Add the image to the body
     }, 10000);
