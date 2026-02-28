@@ -326,6 +326,13 @@ const birthdayScreen = document.getElementById("birthday-screen");
 
 const earlyButton = document.querySelector(".early-access");
 
+// Ensure the "Try Early Access" button triggers the alert on every click
+if (earlyButton) {
+    earlyButton.addEventListener("click", function () {
+        alert("Adhelaa mudiyaadhu"); // Show the alert on every click
+    });
+}
+
 /* COUNTDOWN */
 function updateCountdown(){
     const now = new Date();
